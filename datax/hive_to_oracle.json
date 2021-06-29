@@ -1,0 +1,65 @@
+{
+"job": {
+    "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "/user/hive/warehouse/dws_dmx.db/dws_digital_20210608_c07_reconfigure_touscode_final/00*",
+                        "defaultFS": "hdfs://mcdfs:8020",
+                        "fileType": "text",
+                        "fieldDelimiter": "\u0001",
+                        "encoding": "UTF-8",
+						"haveKerberos": "true",
+                        "kerberosKeytabFilePath": "/home/etl_user/etl/datax/tmp/etl_user.keytab",
+                        "kerberosPrincipal": "etl_user@MCD.COM.CN",
+                                                "hadoopConfig":{                                               
+                                                "dfs.client.failover.proxy.provider.mcdfs":"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider",
+                                                "dfs.ha.namenodes.mcdfs":"nn2",
+                                                "dfs.namenode.rpc-address.mcdfs.nn2":"**.***.***.**:8020",
+                                                "dfs.nameservices":"mcdfs"
+                                        },
+                        "column": [
+                                   {"index":0, "type":"string"},
+                                   {"index":1, "type":"string"},
+                                   {"index":2, "type":"string"},
+                                   {"index":3, "type":"string"},
+                                   {"index":4, "type":"string"},
+                                   {"index":5, "type":"string"},
+                                   {"index":6, "type":"string"},
+                                   {"index":7, "type":"string"},
+                                   {"index":8, "type":"string"},
+                                   {"index":9, "type":"string"}
+								   ]
+                    }
+
+                },
+                                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "username": "DataCOEUser",
+                        "password": "******",
+                        "column": ["biz_date","us_code","coupon_base_type","campaign_type","campaign_name","coupon_name","purchase","coupon_price","receive_cnt","load_dt"
+                        ],
+                        "preSql": [
+                            "delete from EDW.t_dm_cdh_d_oh_receive_dtl where biz_date>='2022-01-01 00:00:00'"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@**.***.**.***:1521:LDWPRD",
+                                "table": [
+                                    "EDW.t_dm_cdh_d_oh_receive_dtl"
+                                ]
+                            }
+                        ]
+                    }
+                        }
+                    }
+    ],
+    "setting": {
+      "speed": {
+        "channel": 1
+       }
+    }
+  }
+}
