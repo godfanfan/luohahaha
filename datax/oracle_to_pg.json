@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader", 
+                    "parameter": {
+                        "connection": [
+                            {
+    "querySql": [
+    "select case when lower(be_type)='instore'  then 'FC'  else be_type end as be_type, market_name, acc_compsales_pct as comp_sales,acc_compgc_pct as comp_gc,acc_compsales_pct_2y as comp_sales_2y, acc_compgc_pct_2y as comp_gc_2y from (select h.biz_date,h.market_name,h.be_type,h.hour_code,h.acc_compsales_pct,h.acc_compgc_pct,h.acc_compsales_pct_2y,h.acc_compgc_pct_2y,row_number() over (partition by   h.biz_date,h.market_name,h.be_type order by h.hour_code desc) as rn from edw.t_out_fact_hnob_d_sales h where  biz_date='${data_date}' and market_name  not in ('CL','DL','McOpCo')) where  rn=1"
+], 
+                                "jdbcUrl": ["jdbc:oracle:thin:@**.***.**.**:1521:LDWPRD"]
+                            }
+                        ], 
+                        "where":"",
+                        "password": "P@ssword!23", 
+                        "username": "DataCOEUser"
+                    }
+                }, 
+               "writer": {
+                    "name": "postgresqlwriter",
+                    "parameter": {
+                        "username": "data_assets_realtime",
+                        "password": "rgm_nob@123",
+                        "column": [
+                          "type",
+                            "market_name",
+							"comp_sales",
+							"comp_gc",
+							"comp_sales_2y",
+							"comp_gc_2y"
+                        ],
+                        "preSql": [
+                            "delete from public.order_88_h where 1=1"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:postgresql://**.***.***.***:5432/rgm_nob",
+                                "table": [
+                                    "public.order_88_h"
+                                ]
+                            }
+                        ]
+                    }
+            }
+           
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}
