@@ -1,0 +1,2 @@
+带空格传参
+python /home/etl_user/stg/datax/datax/bin/datax.py  -p "-Ddata_date='2021-06-29 14:50:00'" /home/etl_user/stg/xudongwang/mcd88/json/88_oracle_pg.json
