@@ -12,7 +12,7 @@ object TestArray {
     /**
      * 不可变长数组
      */
-     println("不可变长数组")
+    println("不可变长数组")
     val str = Array("hello","scala") //声明一个数组对象
     val first=str(0)//读取第一个元素
     str(1)="spark" //修改第二个元素
