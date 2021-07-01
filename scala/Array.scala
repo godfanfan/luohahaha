@@ -27,6 +27,8 @@ object TestArray {
     ints(0)=10
     ints.append(5)//增加元素
     ints+=6//增加元素
-    ints.foreach(x => print(x+" "))
+    for(i <- 0 to ints.length-1){
+      print(ints(i)+" ")
+    }
   }
 }
